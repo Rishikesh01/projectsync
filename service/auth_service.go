@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/google/uuid"
 	"log"
@@ -12,6 +13,7 @@ import (
 
 type AuthService interface {
 	AuthenticateUser(in dto.SignIn) (string, error)
+	ValidateToken(token string) error
 }
 
 type userClaimsToken struct {
@@ -32,6 +34,29 @@ type JwtMiddleware struct {
 type jwtAuthService struct {
 	userRepo repo.UserdetailsRepo
 	*JwtMiddleware
+}
+
+func (j *jwtAuthService) ValidateToken(token string) error {
+	t, err := jwt.ParseWithClaims(
+		token,
+		&userClaimsToken{},
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte("demo"), nil
+		},
+	)
+	if err != nil {
+		return err
+	}
+	claims, ok := t.Claims.(*userClaimsToken)
+	if !ok {
+		err = errors.New("couldn't parse claims")
+		return err
+	}
+	if claims.ExpiresAt.Unix() < time.Now().Local().Unix() {
+		err = errors.New("token expired")
+		return err
+	}
+	return nil
 }
 
 func (j *jwtAuthService) AuthenticateUser(in dto.SignIn) (string, error) {

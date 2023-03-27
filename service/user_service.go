@@ -10,7 +10,6 @@ import (
 
 type UserService interface {
 	Register(register dto.Register) error
-	SignIn(in dto.SignIn) error
 	UpdateUser(user dto.UpdateUser) error
 	DeleteUser(uuid uuid.UUID) error
 }
@@ -27,15 +26,25 @@ func (u *userService) Register(register dto.Register) error {
 	if err := utils.Validate(register); err != nil {
 		return err
 	}
-	return u.userRepo.Save(&model.UserDetails{})
-}
-
-func (u *userService) SignIn(in dto.SignIn) error {
-	``
+	return u.userRepo.Save(&model.UserDetails{Email: register.Email, Password: register.Password, Name: register.Name})
 }
 
 func (u *userService) UpdateUser(user dto.UpdateUser) error {
+	if err := utils.Validate(user); err != nil {
+		return err
+	}
+
+	userDetails, err := u.userRepo.FindByEmail(user.Email)
+	if err != nil {
+		return err
+	}
+
+	userDetails.Email = user.Email
+	userDetails.Password = user.Password
+	return u.userRepo.Save(userDetails)
+
 }
 
-func (u *userService) DeleteUser(uuid uuid.UUID) error {
+func (u *userService) DeleteUser(uid uuid.UUID) error {
+	return u.userRepo.Delete(uid)
 }

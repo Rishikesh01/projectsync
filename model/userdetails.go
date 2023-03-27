@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -12,5 +13,6 @@ type UserDetails struct {
 	Email     string `gorm:"unique"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt time.Time `gorm:"index"`
+	DeletedAt gorm.DeletedAt `gorm:"index"`
+	Projects  []Projects
 }

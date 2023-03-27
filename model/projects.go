@@ -10,6 +10,7 @@ type Projects struct {
 	ProjectName string
 	GithubLink  string
 	IsActive    bool
+	UserID      uuid.UUID
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   time.Time `gorm:"index"`

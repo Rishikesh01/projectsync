@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  projectSync:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - HOST=db
+      - PORT=5432
+      - SSL_MODE=enable
+      - TIME_ZONE=Asia/kolkata
+      - USER=boris
+      - DBNAME=projectDB
+      - PASSWORD=boris
+
+  db:
+    image: postgres:15.2-alpine
+    environment:
+      - POSTGRES_USER=boris
+      - POSTGRES_PASSWORD=boris
+      - POSTGRES_DB=projectDB
+    ports:
+      - '5432:5433'

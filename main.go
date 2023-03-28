@@ -16,7 +16,7 @@ import (
 type env struct {
 	Host     string `required:"true"`
 	Port     int    `required:"true"`
-	Sslmode  string `required:"true" split_words:"true"`
+	SslMode  string `required:"true" split_words:"true"`
 	TimeZone string `required:"true" split_words:"true"`
 	User     string `required:"true"`
 	DbName   string `required:"true"`
@@ -24,7 +24,7 @@ type env struct {
 }
 
 func dbconnconfig(env *env) string {
-	dsn := fmt.Sprintf("host=%suser=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s", env.Host, env.User, env.Password, env.DbName, env.Port, env.Sslmode, env.TimeZone)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s TimeZone=%s", env.Host, env.User, env.Password, env.DbName, env.Port, env.SslMode, env.TimeZone)
 	return dsn
 }
 
@@ -72,5 +72,8 @@ func main() {
 	v1.POST("/projects/add", projectHandler.AddProjects)
 	v1.PATCH("/projects/update", projectHandler.UpdateProject)
 	v1.DELETE("/projects/delete/:id", projectHandler.DeleteProject)
+
+	v1.PATCH("/user/update", userHandler.UpdateUser)
+	v1.DELETE("/user/delete/:id", userHandler.DeleteUser)
 
 }

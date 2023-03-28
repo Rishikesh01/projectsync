@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  projectSync:
+  project_sync:
     build: .
     ports:
       - "8080:8080"
@@ -10,7 +10,7 @@ services:
     environment:
       - HOST=db
       - PORT=5432
-      - SSL_MODE=enable
+      - SSL_MODE=disable
       - TIME_ZONE=Asia/kolkata
       - USER=boris
       - DBNAME=projectDB

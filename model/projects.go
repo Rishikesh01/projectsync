@@ -9,7 +9,10 @@ type Projects struct {
 	ID          uuid.UUID `gorm:"primaryKey"`
 	ProjectName string
 	GithubLink  string
+	IsPrivate   bool
+	ParentDir   string
 	IsActive    bool
+	Hash        string
 	UserID      uuid.UUID
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

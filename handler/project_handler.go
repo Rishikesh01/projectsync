@@ -28,7 +28,7 @@ func (p *ProjectHandler) GetAllProjects(ctx *gin.Context) {
 }
 
 func (p *ProjectHandler) AddProjects(ctx *gin.Context) {
-	var projects []dto.Project
+	var projects []dto.NewProject
 
 	if err := ctx.ShouldBindJSON(&projects); err != nil {
 		ctx.Error(err)
@@ -59,7 +59,7 @@ func (p *ProjectHandler) DeleteProject(ctx *gin.Context) {
 }
 
 func (p *ProjectHandler) UpdateProject(ctx *gin.Context) {
-	var projects []dto.Project
+	var projects []dto.UpdateProject
 	if err := ctx.ShouldBindJSON(&projects); err != nil {
 		ctx.Error(err)
 		return
